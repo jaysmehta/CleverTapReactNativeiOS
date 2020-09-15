@@ -7,6 +7,7 @@
  */
 
 import React, { Component } from 'react';
+import { NativeModules,Linking } from 'react-native';
 import {
   SafeAreaView,
   StyleSheet,
@@ -27,19 +28,58 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 const CleverTap = require('clevertap-react-native');
-
+const CleverTapReact = NativeModules.CleverTapReact;
 
 class App extends Component {
 //const App: () => React$Node = () => {
 
+  componentDidMount() {
+    //CleverTap.registerForPush();
+    Linking.addEventListener('url', this._handleOpenUrl);
+
+        // this handles the case where a deep link launches the application
+        Linking.getInitialURL().then((url) => {
+            if (url) {
+                console.log('launch url', url);
+                this._handleOpenUrl({url});
+            }
+        }).catch(err => console.error('launch url error', err));
+
+        // check to see if CleverTap has a launch deep link
+        // handles the case where the app is launched from a push notification containing a deep link
+        CleverTap.getInitialUrl((err, url) => {
+            if (url) {
+                console.log('CleverTap launch url', url);
+                this._handleOpenUrl({url}, 'CleverTap');
+            } else if (err) {
+                console.log('CleverTap launch url', err);
+            }
+        });
+  } 
+	
+componentWillUnmount() {
+        // clean up listeners
+        // Linking.removeEventListener('url', this._handleOpenUrl);
+        // CleverTap.removeListeners();
+    }
+  
+
 	updateUserProfile() {
-		CleverTap.profileSet({'Name': 'ReactNative iOS', 'Identity': '9876', 'Email': 'test@reactnative.com', 'custom1': '007'});
+		CleverTap.setDebugLevel(0);
+    // CleverTapReact.setDebugLevel(0);
+		CleverTapReact.onUserLogin({'Name': 'ReactNative iOS', 'Identity': '9876', 'Email': 'test@reactnative.com', 'custom1': '007'});
 		Alert.alert('Profile Pushed');
 	}
 
 	pushEvent() {
 		CleverTap.recordEvent('Product Pushed', {'productName':'React Native','productId':'1234'});
+    CleverTap.recordEvent('Plan Purchased');
 		Alert.alert('Event Pushed');
+	}
+	
+	showInBox(){
+		CleverTap.initializeInbox();
+		CleverTap.showInbox();
 	}
 
 render(){	
@@ -61,6 +101,7 @@ render(){
               <Text style={styles.sectionTitle}>Welcome To Clevertap</Text>
               <Button title = "Click Here to Push Profile" onPress={ this.updateUserProfile }/>
 	      <Button title = "Click Here to Push Event" onPress={ this.pushEvent }/>
+	      <Button title = "Show App InBox" onPress={ this.showInBox }/>
             </View>
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionTitle}>Step One</Text>
