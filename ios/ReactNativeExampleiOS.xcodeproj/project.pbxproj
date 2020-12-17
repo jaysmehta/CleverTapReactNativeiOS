@@ -671,6 +671,7 @@
 				"${PODS_ROOT}/CleverTap-iOS-SDK/CleverTapSDK/Inbox/images/volume_on.png",
 				"${PODS_ROOT}/CleverTap-iOS-SDK/CleverTapSDK/Inbox/views/CTCarouselImageView.xib",
 				"${PODS_ROOT}/CleverTap-iOS-SDK/CleverTapSDK/Inbox/models/Inbox.xcdatamodeld",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -740,6 +741,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/volume_on.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/CTCarouselImageView.nib",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Inbox.momd",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

@@ -33,9 +33,17 @@ const CleverTapReact = NativeModules.CleverTapReact;
 class App extends Component {
 //const App: () => React$Node = () => {
 
+// UNSAFE_componentWillMount(){
+	
+// 	// Alert.alert('Component will mount');
+// }
+
   componentDidMount() {
     //CleverTap.registerForPush();
     Linking.addEventListener('url', this._handleOpenUrl);
+    CleverTap.addListener(CleverTap.CleverTapPushNotificationClicked, (event) => { this._handleCleverTapEvent(CleverTap.CleverTapPushNotificationClicked,event); });
+
+
 
         // this handles the case where a deep link launches the application
         Linking.getInitialURL().then((url) => {
@@ -61,6 +69,17 @@ componentWillUnmount() {
         // clean up listeners
         // Linking.removeEventListener('url', this._handleOpenUrl);
         // CleverTap.removeListeners();
+    }
+
+    _handleOpenUrl(event, from) {
+        console.log('handleOpenUrl', event.url, from);
+        Alert.alert(event.url);
+    }
+
+    _handleCleverTapEvent(eventName,event) {
+    	console.log("Push Notification Clicked ",eventName);
+    	console.log("Payload ",event);
+    	Alert.alert(eventName);
     }
   
 
