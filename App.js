@@ -30,13 +30,22 @@ import {
 const CleverTap = require('clevertap-react-native');
 const CleverTapReact = NativeModules.CleverTapReact;
 
-class App extends Component {
+class App extends React.Component {
 //const App: () => React$Node = () => {
 
 // UNSAFE_componentWillMount(){
 	
 // 	// Alert.alert('Component will mount');
 // }
+
+constructor(props){
+    super(props);
+    console.log('initial props:', props);
+    if(props.UIApplicationLaunchOptionsRemoteNotificationKey){
+    	Alert.alert(JSON.stringify(props.UIApplicationLaunchOptionsRemoteNotificationKey.aps.alert.title));
+    }
+    
+  }
 
   componentDidMount() {
     //CleverTap.registerForPush();
@@ -61,8 +70,12 @@ class App extends Component {
                 this._handleOpenUrl({url}, 'CleverTap');
             } else if (err) {
                 console.log('CleverTap launch url', err);
+                // Alert.alert(err);
             }
         });
+
+
+
   } 
 	
 componentWillUnmount() {
